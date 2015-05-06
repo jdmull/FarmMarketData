@@ -1,0 +1,57 @@
+U.S. Farmers Markets
+========================================================
+author: Jessica Mullison
+date: Feb 22, 2015
+font-family: "Palatino Linotype"
+transition:rotate
+transition:faster
+    
+Simple Farmers Market Listing
+========================================================
+
+This application, reads a listing of U.S. farmers markets, filters listed markets based on a state drop down box, then gives the users an interactive table of that state's markets.
+
+Users can see, sort & search on: 
+* market locations
+* times markets are open
+* website addresses for more information
+
+This can make it more convenient to incorporate fresh produce regularly in the diet. 
+
+What Markets are Open Tuesday Night?
+========================================================
+
+![Program sample image](FarmersMarketDemo.png)
+
+
+Why is this Useful?
+=========================================================
+
+There are many farmers markets available, but some reasons that they can be underused are:
+* They are open for short periods. 
+* The location of the farmers market can change from year to year, since they often take place in areas other than inside a fixed building.
+
+Both problems result from a lack in information.
+
+
+About the Data
+=========================================================
+<small>This list of farmers markets is made publically available by the USDA. With an average of ~152 markets/state, most states are well covered.</small>
+
+```{r echo=F, fig.width=13, fig.height=3 }
+
+  markets<-read.csv("data/Export.csv",sep=",",strip.white=T)
+  markets<-markets[complete.cases(markets),]
+  markets$coordinates<-paste(markets$y,markets$x,sep=":")
+  markets$State[markets$State=="Virigina"]<-"Virginia"
+  markets$State[markets$State=="Calafornia"]<-"California"
+  library(ggplot2)
+  chart <- qplot(markets$State,geom="histogram",ylab="Number of Recorded Farmers Markets",xlab="State")
+  chart + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r echo=TRUE,height=1}
+  nrow(markets)/length(levels(markets$State))  
+```
+
